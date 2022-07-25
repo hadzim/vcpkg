@@ -1,1 +1,2 @@
 !x86-windows/bin
+!x86-windows/bin/*.exe
