@@ -12,13 +12,19 @@ Vcpkg helps you manage C and C++ libraries on Windows, Linux and MacOS. This too
 - [Patching Example: Patching libpng to work for x64-uwp](examples/patching.md)
 - [Getting Started with Versioning](examples/versioning.getting-started.md)
 
+### Command Line Reference
+
+- [Command Line Reference](commands/index.md)
+
 ### User Help
 
-- [Integration with build systems](users/integration.md)
+- [Buildsystem Integration](users/buildsystems/integration.md)
 - [Triplet files](users/triplets.md)
 - [Configuration and Environment](users/config-environment.md)
+- [Authentication](users/authentication.md)
 - [Manifest Mode](users/manifests.md)
 - [Binary Caching](users/binarycaching.md)
+- [Asset Caching](users/assetcaching.md)
 - [Versioning](users/versioning.md)
 - [Usage with Android](users/android.md)
 - [Usage with Mingw-w64](users/mingw.md)
@@ -27,12 +33,14 @@ Vcpkg helps you manage C and C++ libraries on Windows, Linux and MacOS. This too
 
 ### Maintainer Help
 
-- [Manifest files - vcpkg.json](maintainers/manifest-files.md)
-- [Control files](maintainers/control-files.md)
-- [Portfile functions](maintainers/portfile-functions.md)
-- [Common CMake definitions](maintainers/vcpkg_common_definitions.md)
+- [Manifest Files - vcpkg.json](maintainers/manifest-files.md)
+- [Control Files](maintainers/control-files.md)
+- [Portfile Functions](maintainers/portfile-functions.md)
+- [Authoring Script Ports](maintainers/authoring-script-ports.md)
+- [Common CMake Definitions](maintainers/vcpkg_common_definitions.md)
 - [Maintainer Guidelines](maintainers/maintainer-guide.md)
 - [Creating Registries](maintainers/registries.md)
+- [CMake Guidelines](maintainers/cmake-guidelines.md)
 
 ### [Vcpkg-Tool](https://github.com/microsoft/vcpkg-tool) Maintainer Help
 
@@ -45,11 +53,6 @@ Vcpkg helps you manage C and C++ libraries on Windows, Linux and MacOS. This too
 - [vcpkg.info](https://vcpkg.info/) - Package index + search
 - [vcpkgx](https://vcpkgx.com/) - Package index + search
 - [vcpkg index](https://vcpkg.dev/) - Package index + search
-
-### Specifications
-
-- [Export](specifications/export-command.md)
-- [Feature Packages](specifications/feature-packages.md)
 
 ### Blog posts
 

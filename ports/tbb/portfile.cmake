@@ -1,6 +1,4 @@
-if (NOT VCPKG_TARGET_IS_LINUX AND NOT VCPKG_TARGET_IS_OSX)
-    vcpkg_fail_port_install(ON_ARCH "arm" "arm64" ON_TARGET "uwp")
-endif()
+set(VCPKG_POLICY_MISMATCHED_NUMBER_OF_BINARIES enabled)
 
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
@@ -14,22 +12,11 @@ vcpkg_from_github(
 )
 
 file(COPY ${CMAKE_CURRENT_LIST_DIR}/CMakeLists.txt DESTINATION ${SOURCE_PATH})
-if (TBB_DISABLE_EXCEPTIONS)
-    message(STATUS "Building TBB with exception-handling constructs disabled because TBB_DISABLE_EXCEPTIONS is set to ON.")
-else()
-    message(STATUS "TBB uses exception-handling constructs by default (if supported by the compiler). This use can be disabled with 'SET(TBB_DISABLE_EXCEPTIONS ON)' in your custom triplet.")
-endif()
 
 if (NOT VCPKG_TARGET_IS_WINDOWS)
-    if (TBB_DISABLE_EXCEPTIONS)
-        set(DISABLE_EXCEPTIONS ON)
-    else()
-        set(DISABLE_EXCEPTIONS OFF)
-    endif()
     vcpkg_configure_cmake(
         SOURCE_PATH ${SOURCE_PATH}
         PREFER_NINJA
-        OPTIONS -DDISABLE_EXCEPTIONS=${DISABLE_EXCEPTIONS}
     )
 
     vcpkg_install_cmake()
@@ -72,10 +59,6 @@ else()
         else()
             string(REPLACE "\/D_CRT_SECURE_NO_DEPRECATE"
                         "\/D_CRT_SECURE_NO_DEPRECATE \/DIN_CILK_RUNTIME" SLN_CONFIGURE "${SLN_CONFIGURE}")
-        endif()
-        if (TBB_DISABLE_EXCEPTIONS)
-            string(REPLACE "<PreprocessorDefinitions>%(PreprocessorDefinitions)<\/PreprocessorDefinitions>"
-                        "<PreprocessorDefinitions>TBB_USE_EXCEPTIONS=0;%(PreprocessorDefinitions)<\/PreprocessorDefinitions>" SLN_CONFIGURE "${SLN_CONFIGURE}")
         endif()
         file(WRITE ${CONFIGURE_FILE_NAME} "${SLN_CONFIGURE}")
     endmacro()
