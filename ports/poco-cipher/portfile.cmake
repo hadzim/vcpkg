@@ -31,7 +31,7 @@ vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
     FEATURES
         pdf         ENABLE_PDF
         netssl      ENABLE_NETSSL
-        netssl      ENABLE_NETSSL_WIN
+        netssl      FORCE_OPENSSL 
         netssl      ENABLE_CRYPTO
         sqlite3     ENABLE_DATA_SQLITE
         postgresql  ENABLE_DATA_POSTGRESQL
