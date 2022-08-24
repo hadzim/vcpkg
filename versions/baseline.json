@@ -5596,6 +5596,10 @@
       "baseline": "1.11.2",
       "port-version": 0
     },
+    "poco-cipher": {
+      "baseline": "1.11.2",
+      "port-version": 0
+    },
     "podofo": {
       "baseline": "0.9.8",
       "port-version": 0
