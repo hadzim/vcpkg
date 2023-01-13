@@ -39,6 +39,7 @@ vcpkg_cmake_configure(
         -DBUILD_SAMPLES=OFF
         -DCPPREST_EXPORT_DIR=share/cpprestsdk
         -DWERROR=OFF
+        -DCPPREST_HTTP_CLIENT_IMPL:STRING=asio
         -DPKG_CONFIG_EXECUTABLE=FALSE
     OPTIONS_DEBUG
         -DCPPREST_INSTALL_HEADERS=OFF

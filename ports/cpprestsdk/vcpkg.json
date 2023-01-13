@@ -11,7 +11,7 @@
   "dependencies": [
     {
       "name": "boost-asio",
-      "platform": "!uwp & !windows"
+      "platform": "!uwp"
     },
     {
       "name": "boost-chrono",
@@ -43,7 +43,7 @@
     },
     {
       "name": "openssl",
-      "platform": "!uwp & !windows"
+      "platform": "!uwp"
     },
     {
       "name": "vcpkg-cmake",
