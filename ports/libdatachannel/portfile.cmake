@@ -7,8 +7,8 @@ endif()
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO paullouisageneau/libdatachannel
-    REF f8ac6955e3cd673ac23a2172cd7dc42fc013b7b3 #v0.17.9
-    SHA512 3a8e3a47032a1fad770639c1bac266388c87046432cd44b391f146820cf3d3a871834e104deb9fb6fa901d6f82eba8aea0baa0b0eeb7cfb24808c408b020407b
+    REF "v${VERSION}"
+    SHA512 ede45221b8fb4ebc2a812f187372bc65da2a495311058e3b486ba7a2a584817ecdef286d956386a8635752786aebd5d0507bd84a84e484b9bf73ecd2dd92f918
     HEAD_REF master
     PATCHES
         ${PATCHES}
@@ -47,4 +47,4 @@ ${DATACHANNEL_CONFIG}")
 
 file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include" "${CURRENT_PACKAGES_DIR}/debug/share")
 
-file(INSTALL "${SOURCE_PATH}/LICENSE" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}" RENAME copyright)
+vcpkg_install_copyright(FILE_LIST "${SOURCE_PATH}/LICENSE")
