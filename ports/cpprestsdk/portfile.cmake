@@ -7,6 +7,7 @@ vcpkg_from_github(
     PATCHES 
         fix-find-openssl.patch
         fix_narrowing.patch
+	revocation-check-can-be-independently-enabled-disabled.patch
 )
 
 set(OPTIONS)
