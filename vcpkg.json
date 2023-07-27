@@ -36,7 +36,7 @@
         },
         {
             "name": "cpprestsdk",
-            "version>=": "2.10.18#2"
+            "version>=": "2.10.18#3"
         }
     ],
     "builtin-baseline": "ad419efb32eff31f66b212b2d7d56005a10efe33",
@@ -50,6 +50,6 @@
         {"name": "mosquitto", "version": "2.0.14"},
         {"name": "libusb", "version": "1.0.26#1"},
         {"name": "libusb-win32", "version": "1.2.6.0#8"},
-        {"name": "cpprestsdk", "version": "2.10.18#2"}
+        {"name": "cpprestsdk", "version": "2.10.18#3"}
     ]
 }
