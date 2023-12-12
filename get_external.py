@@ -8,7 +8,7 @@ def main():
     print('Downloading external files from Dulik FTP server...')
     cwd_to_script(__file__)
     ftp = FtpClient()
-    ftp.download_ftp_tree('/pub/SDK/vcpkg/', '.')
+    ftp.download_tree('/pub/SDK/vcpkg/', '.')
     print('Download successful. Now run copy-external.bat to copy the files.')
 
 class FtpClient:
@@ -20,7 +20,7 @@ class FtpClient:
     def __exit__(self):
         self.ftp.quit()
 
-    def download_ftp_tree(self, remote_path, local_path, show_just_finished = False):
+    def download_tree(self, remote_path, local_path, show_just_finished = False):
         try:
             self.ftp.cwd(remote_path)
             os.makedirs(local_path, exist_ok=True)
@@ -37,7 +37,7 @@ class FtpClient:
                     file.close()
                     print('') # after progress print new line
                 else:
-                    self.download_ftp_tree(filename, lpath, show_just_finished)
+                    self.download_tree(filename, lpath, show_just_finished)
         except Exception as e:
             print("Error:", e)
 
