@@ -8,7 +8,7 @@
         },
         {
             "name": "qt5",
-            "version>=": "5.15.5"
+            "version>=": "5.15.15"
         },
         {
             "name": "opencv4",
@@ -16,27 +16,23 @@
         },
         {
             "name": "boost",
-            "version>=": "1.79.0"
+            "version>=": "1.86.0"
         },
         {
             "name": "mosquitto",
-            "version>=": "2.0.14"
+            "version>=": "2.0.18"
         },
         {
             "name": "libusb",
-            "version>=": "1.0.26#1"
+            "version>=": "1.0.27"
         },
         {
             "name": "libusb-win32",
-            "version>=": "1.2.6.0#8"
+            "version>=": "1.2.6.0"
         },
         {
             "name": "protobuf",
             "version>=": "3.21.4"
-        },
-        {
-            "name": "cpprestsdk",
-            "version>=": "2.10.18#3"
         }
     ],
     "builtin-baseline": "ad419efb32eff31f66b212b2d7d56005a10efe33",
@@ -44,12 +40,11 @@
         {"name": "protobuf", "version": "3.15.8"},
 
         {"name": "poco-cipher", "version": "1.11.2"},
-        {"name": "qt5", "version": "5.15.5"},
+        {"name": "qt5", "version": "5.15.15"},
         {"name": "opencv4", "version": "4.10.0"},
-        {"name": "boost", "version": "1.79.0"},
-        {"name": "mosquitto", "version": "2.0.14"},
-        {"name": "libusb", "version": "1.0.26#1"},
-        {"name": "libusb-win32", "version": "1.2.6.0#8"},
-        {"name": "cpprestsdk", "version": "2.10.18#3"}
+        {"name": "boost", "version": "1.86.0"},
+        {"name": "mosquitto", "version": "2.0.18"},
+        {"name": "libusb", "version": "1.0.27"},
+        {"name": "libusb-win32", "version": "1.2.6.0"}
     ]
 }
