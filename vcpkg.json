@@ -16,7 +16,7 @@
         },
         {
             "name": "boost",
-            "version>=": "1.86.0"
+            "version>=": "1.79.0"
         },
         {
             "name": "mosquitto",
@@ -42,7 +42,7 @@
         {"name": "poco-cipher", "version": "1.11.2"},
         {"name": "qt5", "version": "5.15.15"},
         {"name": "opencv4", "version": "4.10.0"},
-        {"name": "boost", "version": "1.86.0"},
+        {"name": "boost", "version": "1.79.0"},
         {"name": "mosquitto", "version": "2.0.18"},
         {"name": "libusb", "version": "1.0.27"},
         {"name": "libusb-win32", "version": "1.2.6.0"}
