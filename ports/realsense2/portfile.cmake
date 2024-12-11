@@ -1,12 +1,13 @@
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO IntelRealSense/librealsense
-    REF v2.54.1
-    SHA512 9b7146a5f6a4152d95286f679e0f5314ab0b040f67a030e42dfe01ad995af486d3d158d1ac7ef0bbe783a90e067d32e4bb4ba1a524fe75a89be6c7fe9c3a30ed
+    REF "v${VERSION}"
+    SHA512 0e8acc96bff60b6842fea03c871ff9b350c4f1c90c9493d6e1163384ebd4ba7c31fb110e9cca3547d36145628ad93cca298f36ba9d9cf8692dab5ad0d3d58a4d
     HEAD_REF master
     PATCHES
         fix_openni2.patch
-        fix-osx.patch # from https://github.com/IntelRealSense/librealsense/pull/11997
+        fix-nlohmann_json.patch
+        fix-android-prefix-path.patch
 )
 
 file(COPY "${SOURCE_PATH}/src/win7/drivers/IntelRealSense_D400_series_win7.inf" DESTINATION "${SOURCE_PATH}")
@@ -70,5 +71,5 @@ if(BUILD_OPENNI2_BINDINGS)
     endif()
 endif()
 
-file(INSTALL "${SOURCE_PATH}/LICENSE" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}" RENAME copyright)
+vcpkg_install_copyright(FILE_LIST "${SOURCE_PATH}/LICENSE")
 vcpkg_fixup_pkgconfig()
