@@ -12,7 +12,7 @@
         },
         {
             "name": "opencv4",
-            "version>=": "4.6.0#2"
+            "version>=": "4.10.0"
         },
         {
             "name": "boost",
@@ -45,7 +45,7 @@
 
         {"name": "poco-cipher", "version": "1.11.2"},
         {"name": "qt5", "version": "5.15.5"},
-        {"name": "opencv4", "version": "4.6.0#2"},
+        {"name": "opencv4", "version": "4.10.0"},
         {"name": "boost", "version": "1.79.0"},
         {"name": "mosquitto", "version": "2.0.14"},
         {"name": "libusb", "version": "1.0.26#1"},
