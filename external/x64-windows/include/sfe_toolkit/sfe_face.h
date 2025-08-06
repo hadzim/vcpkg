@@ -15,6 +15,21 @@ extern "C" {
 
 // FACE DETECTION
 
+/// @deprecated Use SFEEntity instead, this type will be removed in future
+typedef SFEEntity SFEFaceEntity;
+
+/// @brief Candidate for identification by template
+/// @deprecated Replace with SFETemplateIdentificationCandidate
+typedef SFETemplateIdentificationCandidate SFEIdentificationResult;
+
+// @brief Candidate for identification by template
+/// @deprecated Replace with SFETemplateIdentificationCandidate
+typedef SFETemplateIdentificationCandidate SFEFaceTemplateIdentificationCandidate;
+
+/// @brief Candidate for identification by entity
+/// @deprecated Replace with SFEEntityIdentificationCandidate
+typedef SFEEntityIdentificationCandidate SFEFaceEntityIdentificationCandidate;
+
 /// @brief Face detect struct
 typedef struct SFEFaceDetect {
   /// bounding box
@@ -26,13 +41,13 @@ typedef struct SFEFaceDetect {
 } SFEFaceDetect;
 
 /// @brief Detect faces in the source image
-/// @param solver face detection solver
-/// @param image source image
-/// @param threshold detection confidence threshold - range <0,1>
-/// @param out_faces pointer to an array of detected faces with detection
+/// @param[in] solver face detection solver
+/// @param[in] image source image
+/// @param[in] threshold detection confidence threshold - range <0,1>
+/// @param[out] out_faces pointer to an array of detected faces with detection
 /// confidence above the threshold, detected faces are sorted by detection
 /// confidence
-/// @param in_out_face_count IN: maximum number of faces to detect OUT: real
+/// @param[in,out] in_out_face_count IN: maximum number of faces to detect OUT: real
 /// number of detected faces
 /// @return Error in case of failed detection.
 SFEError sfeFaceDetect(SFESolver solver, SFEImageView image, float threshold,
@@ -82,10 +97,10 @@ typedef struct SFEFaceLandmarks {
 
 /// @brief Detect 23 landmarks of the face detected in the area of source image
 /// marked with bounding box
-/// @param solver face landmarks solver
-/// @param image source image
-/// @param bbox bounding box of the detected face
-/// @param out_face_landmarks OUT: pointer to an array of detected landmarks,
+/// @param[in] solver face landmarks solver
+/// @param[in] image source image
+/// @param[in] bbox bounding box of the detected face
+/// @param[out] out_face_landmarks OUT: pointer to an array of detected landmarks,
 /// the size of the array should be 23 which is the number of landmarks detected
 /// by the solver
 /// @return Error in case of failed landmarks detection.
@@ -95,9 +110,9 @@ sfeFaceLandmarks(SFESolver solver, SFEImageView image, SFEBbox bbox,
 
 /// @brief Get confidence from given landmarks if the face is wearing a face
 /// mask
-/// @param face_landmarks array of detected landmarks, the size of the array
+/// @param[in] face_landmarks array of detected landmarks, the size of the array
 /// should be 23 which is the number of landmarks detected by the solver
-/// @param out_mask_confidence OUT: confidence of wearing a face mask - range
+/// @param[out] out_mask_confidence OUT: confidence of wearing a face mask - range
 /// <0-1>
 SFEError sfeFaceMaskConfidence(
     const SFEFaceLandmarks face_landmarks[SFE_FACE_LANDMARK_COUNT],
@@ -108,13 +123,13 @@ SFEError sfeFaceMaskConfidence(
 /// distance and distance between center of mouth and center point between eyes
 /// (nose root): face_size = max(distance(left_eye_center, right_eye_center),
 /// distance(mouth_center, eyes_center))
-/// @param image source image
-/// @param face_landmarks array of face landmarks
-/// @param face_size OUT: size of the face in pixels
+/// @param[in] image source image
+/// @param[in] face_landmarks array of face landmarks
+/// @param[out] face_size OUT: size of the face in pixels
 /// @return Error
 SFEError sfeFaceSize(SFEImageView image,
                      SFEFaceLandmarks face_landmarks[SFE_FACE_LANDMARK_COUNT],
-                     size_t *face_size);
+                     float *face_size);
 
 // FACE TEMPLATE
 #define SFE_FACE_TEMPLATE_SIZE 522
@@ -132,40 +147,14 @@ typedef struct SFEFaceTemplateVersion {
   uint8_t version_minor;
 } SFEFaceTemplateVersion;
 
-/// @brief Candidate for identification by template
-typedef struct SFEFaceTemplateIdentificationCandidate {
-  /// @brief matching score
-  float score;
-  /// @brief index of the template from the input gallery
-  size_t index;
- } SFEFaceTemplateIdentificationCandidate;
-
-/// @brief Face template identification result
-/// @deprecated Replace with SFEFaceTemplateIdentificationCandidate
-typedef SFEFaceTemplateIdentificationCandidate SFEIdentificationResult;
-
-/// @brief Face entity type, used to group templates for entity identification.
-/// This type is compatible with uuid_v4 that can be used to generate unique ids
-typedef struct SFEFaceEntity {
-  uint8_t uuid[16];
-} SFEFaceEntity;
-
-/// @brief Candidate for identification by entity
-typedef struct SFEFaceEntityIdentificationCandidate {
-  /// @brief matching score
-  float score;
-  /// @brief candidate entity id
-  SFEFaceEntity entity;
- } SFEFaceEntityIdentificationCandidate;
-
 /// @brief Extract template from source image and given face landmarks
-/// @param solver template extraction solver
-/// @param image source image
-/// @param face_landmarks face landmarks detected in source image
-/// @param raw_detection_confidence raw value of face detection confidence of
+/// @param[in] solver template extraction solver
+/// @param[in] image source image
+/// @param[in] face_landmarks face landmarks detected in source image
+/// @param[in] raw_detection_confidence raw value of face detection confidence of
 /// detected face (used in template quality calculation)
-/// @param out_face_template extracted face template
-/// @return Error in case of failed detection.
+/// @param[out] out_face_template extracted face template
+/// @return Error in case of failed extraction.
 SFEError
 sfeFaceTemplateExtract(SFESolver solver, SFEImageView image,
                        SFEFaceLandmarks face_landmarks[SFE_FACE_LANDMARK_COUNT],
@@ -173,79 +162,79 @@ sfeFaceTemplateExtract(SFESolver solver, SFEImageView image,
                        SFEFaceTemplate *out_face_template);
 
 /// @brief Match two face templates
-/// @param template1 first template to match
-/// @param template2 second template to match
-/// @param out_matching_score OUT: matching score - range <0,1>
+/// @param[in] template1 first template to match
+/// @param[in] template2 second template to match
+/// @param[out] out_matching_score OUT: matching score - range <0,1>
 /// @return Error in case of failed matching
 SFEError sfeFaceTemplateMatch(SFEFaceTemplate *template1,
                               SFEFaceTemplate *template2,
                               float *out_matching_score);
 
 /// @brief Get template quality
-/// @param face_template source template
-/// @param out_face_template_quality OUT: template quality - range <0,1>
+/// @param[in] face_template source template
+/// @param[out] out_face_template_quality OUT: template quality - range <0,1>
 /// @return Error in case of template checksum mismatch
 SFEError sfeFaceTemplateQuality(SFEFaceTemplate *face_template,
                                 float *out_face_template_quality);
 
 /// @brief Get face template version
-/// @param face_template  source template
-/// @param out_face_template_version OUT: face template version struct
+/// @param[in] face_template  source template
+/// @param[out] out_face_template_version OUT: face template version struct
 /// @return Error in case of template checksum mismatch
 SFEError
 sfeFaceTemplateVersion(SFEFaceTemplate *face_template,
                        SFEFaceTemplateVersion *out_face_template_version);
 
-/// @brief Get an ordered array of SFEIdentificationResult from tested template
+/// @brief Get an ordered array of SFETemplateIdentificationCandidate from tested template
 /// best matches of probe template with the templates in templates_gallery
-/// @param probe_face_template probe template
-/// @param gallery_size number of templates in gallery
-/// @param templates_gallery pointer to an array of SFEFaceTemplate
-/// @param matching_score_threshold threshold for matching - range <0,1>
+/// @param[in] probe_face_template probe template
+/// @param[in] gallery_size number of templates in gallery
+/// @param[in] templates_gallery pointer to an array of SFEFaceTemplate
+/// @param[in] matching_score_threshold threshold for matching - range <0,1>
 /// Function will return only candidates with score above the threshold
-/// @param out_candidates Pointer to an ordered array of candidates
-/// @param in_out_candidates_count IN: Expected number of candidates
+/// @param[out] out_candidates Pointer to an ordered array of candidates
+/// @param[in,out] in_out_candidates_count IN: Expected number of candidates
 /// OUT: Number of found candidates with matching score above the threshold
-/// @param thread_count Number of threads to use in the identification - 0: use
+/// @param[in] thread_count Number of threads to use in the identification - 0: use
 /// all available cores, 1: use single thread, N: use N number of threads
 /// @return Error in case of failed identification
-SFEError sfeFaceTemplateIdentify(SFEFaceTemplate *probe_face_template,
-                                 SFEFaceTemplate *templates_gallery,
-                                 size_t gallery_size,
-                                 float matching_score_threshold,
-                                 SFEFaceTemplateIdentificationCandidate *out_candidates,
-                                 size_t *in_out_candidates_count,
-                                 size_t thread_count);
+SFEError
+sfeFaceTemplateIdentify(SFEFaceTemplate *probe_face_template,
+                        SFEFaceTemplate *templates_gallery, size_t gallery_size,
+                        float matching_score_threshold,
+                        SFEFaceTemplateIdentificationCandidate *out_candidates,
+                        size_t *in_out_candidates_count, size_t thread_count);
 
-/// @brief Get an ordered array of SFEIdentificationEntityResult from tested template
-/// best matches of probe template with the templates in templates_gallery
-/// Entity is then used to group the results by entity using the best score of any template associated with the entity.
-/// @param probe_face_template probe template
-/// @param templates_gallery pointer to an array of SFEFaceTemplate
-/// @param entities_gallery pointer to an array of SFEFaceEntity that corresponds with templates_gallery
-/// @param gallery_size number of templates in gallery
-/// @param matching_score_threshold threshold for matching - range <0,1>
+/// @brief Get an ordered array of SFEEntityIdentificationCandidate from tested
+/// template best matches of probe template with the templates in
+/// templates_gallery Entity is then used to group the results by entity using
+/// the best score of any template associated with the entity.
+/// @param[in] probe_face_template probe template
+/// @param[in] templates_gallery pointer to an array of SFEFaceTemplate
+/// @param[in] entities_gallery pointer to an array of SFEEntity that
+/// corresponds with templates_gallery
+/// @param[in] gallery_size number of templates in gallery
+/// @param[in] matching_score_threshold threshold for matching - range <0,1>
 /// Function will return only candidates with score above the threshold
-/// @param out_candidates Pointer to an ordered array of candidates
-/// @param in_out_candidates_count IN: Expected number of candidates
+/// @param[out] out_candidates Pointer to an ordered array of candidates
+/// @param[in,out] in_out_candidates_count IN: Expected number of candidates
 /// OUT: Number of found entities with best score above the threshold
-/// @param thread_count Number of threads to use in the identification - 0: use
+/// @param[in] thread_count Number of threads to use in the identification - 0: use
 /// all available cores, 1: use single thread, N: use N number of threads
 /// @return Error in case of failed identification
 SFEError sfeFaceEntityIdentify(SFEFaceTemplate *probe_face_template,
-                                 SFEFaceTemplate *templates_gallery,
-                                 SFEFaceEntity *entities_gallery,
-                                 size_t gallery_size,
-                                 float matching_score_threshold,
-                                 SFEFaceEntityIdentificationCandidate *out_candidates,
-                                 size_t *in_out_candidates_count,
-                                 size_t thread_count);
+                               SFEFaceTemplate *templates_gallery,
+                               SFEEntity *entities_gallery, size_t gallery_size,
+                               float matching_score_threshold,
+                               SFEEntityIdentificationCandidate *out_candidates,
+                               size_t *in_out_candidates_count,
+                               size_t thread_count);
 
 /// @brief Passive liveness score calculation
-/// @param solver passive liveness solver
-/// @param image source image
-/// @param face_landmarks face landmarks detected in source image
-/// @param out_liveness_score OUT: normalized score of passive liveness
+/// @param[in] solver passive liveness solver
+/// @param[in] image source image
+/// @param[in] face_landmarks face landmarks detected in source image
+/// @param[out] out_liveness_score OUT: normalized score of passive liveness
 /// @return Error in case of failed passive liveness score calculation
 SFEError
 sfeFaceLivenessPassive(SFESolver solver, SFEImageView image,
@@ -264,9 +253,9 @@ typedef struct SFEFaceArea {
 } SFEFaceArea;
 
 /// @brief Get face area
-/// @param image source image
-/// @param face_landmarks face landmarks detected in source image
-/// @param out_area OUT: structure containing the face size, the face area
+/// @param[in] image source image
+/// @param[in] face_landmarks face landmarks detected in source image
+/// @param[out] out_area OUT: structure containing the face size, the face area
 /// relative to the source image, the face area intersected with the source
 /// image and relative to the source image.
 /// @return Error in case of failed area struct calculations
@@ -289,8 +278,8 @@ typedef struct SFEFaceHeadPose {
 
 /// @brief Calculate angle rotations of head towards camera reference frame from
 /// given landmarks
-/// @param face_landmarks face landmarks detected in source image
-/// @param out_head_pose OUT: structure containing the angle rotations - roll,
+/// @param[in] face_landmarks face landmarks detected in source image
+/// @param[out] out_head_pose OUT: structure containing the angle rotations - roll,
 /// yaw and pitch
 /// @return Error in case of failed head pose calculationse
 SFEError
@@ -301,9 +290,9 @@ sfeFaceHeadPose(SFEImageView image,
 /// @brief Face quality attributes struct
 typedef struct SFEFaceQualityAttributes {
   /// @brief Normalized face attribute for evaluating whether an area of face
-  /// image is not blurred. Sharpness values are from range <0,inf>.  Values near
-  /// 0 indicate 'very blurred', values near (or above) 1 indicate 'very sharp'.
-  /// The decision threshold is in range <0.08, 0.7>.
+  /// image is not blurred. Sharpness values are from range <0,inf>.  Values
+  /// near 0 indicate 'very blurred', values near (or above) 1 indicate 'very
+  /// sharp'. The decision threshold is in range <0.08, 0.7>.
   float sharpness;
   /// @brief Normalized face attribute for evaluating whether an area of face is
   /// correctly exposed. Brightness values are from range <0,1>. Values near 0
@@ -326,9 +315,9 @@ typedef struct SFEFaceQualityAttributes {
 
 /// @brief Calculate face image quality attributes from given source image and
 /// landmarks data
-/// @param image source image
-/// @param face_landmarks face landmarks detected in source image
-/// @param out_quality_attributes structure containing normalized `sharpness`,
+/// @param[in] image source image
+/// @param[in] face_landmarks face landmarks detected in source image
+/// @param[out] out_quality_attributes structure containing normalized `sharpness`,
 /// `brightness`, `contrast` and `unique_intensity_levels`
 /// @return Error in case of failed quality attributes calculation
 SFEError sfeFaceQualityAttributes(
@@ -350,12 +339,12 @@ typedef enum SFEFaceDetectAccuracyType {
 /// recommended to set the max_face_size to `max_face_size < 30 *
 /// min_face_size`. Performance could decrease if you do not comply with this
 /// requirement.
-/// @param image Source image
-/// @param detection_mode Accuracy type, it can be accurate or balanced
-/// @param min_face_size Desired minimal size of detected face
-/// @param max_face_size Desired maximal size of detected face
-/// @param out_img_width Recommended image width
-/// @param out_img_height Recommended image height
+/// @param[in] image Source image
+/// @param[in] detection_mode Accuracy type, it can be accurate or balanced
+/// @param[in] min_face_size Desired minimal size of detected face
+/// @param[in] max_face_size Desired maximal size of detected face
+/// @param[out] out_img_width Recommended image width
+/// @param[out] out_img_height Recommended image height
 /// @return Error in case of non valid input combination
 SFEError sfeFaceDetectInputSize(SFEImageView image,
                                 SFEFaceDetectAccuracyType detection_mode,
@@ -378,18 +367,85 @@ typedef struct SFEFaceCrop {
 /// size of the crop as an extension of the detection bounding box. The crop
 /// will be centered on the detection bounding box and the size will be
 /// multiplied by this value. Valid values are 0, 1, 2, 3, 4 and 5.
-/// @param image Source image
-/// @param face_landmarks Array of face landmarks
-/// @param face_size_extension Defines the size of the crop as an extension of
+/// @param[in] image Source image
+/// @param[in] face_landmarks Array of face landmarks
+/// @param[in] face_size_extension Defines the size of the crop as an extension of
 /// the detection bounding box.
-/// @param max_face_size Defines the maximum size of the face in the crop area.
+/// @param[in] max_face_size Defines the maximum size of the face in the crop area.
 /// If the actual face size is larger, the crop image will be downscaled.
-/// @param out_crop OUT: Structure containing used crop extension,
+/// @param[out] out_crop OUT: Structure containing used crop extension,
 /// calculated crop's bounding box and the cropped image of the face
 SFEError sfeFaceCrop(SFEImageView image,
                      SFEFaceLandmarks face_landmarks[SFE_FACE_LANDMARK_COUNT],
                      uint32_t face_size_extension, float max_face_size,
                      SFEFaceCrop *out_crop);
+
+/// @brief Tracker is a ByteTrack implementation for face tracking across
+/// @warning Use `sfeFaceTrackerFree` to release memory associated with the
+/// tracker.
+typedef void *SFEFaceTracker;
+
+/// @brief Tracked state
+enum SFEFaceTrackedState {
+  SFE_FACE_TRACKED_STATE_NEW = 0,
+  SFE_FACE_TRACKED_STATE_TRACKED = 1,
+  SFE_FACE_TRACKED_STATE_LOST = 2,
+  SFE_FACE_TRACKED_STATE_REMOVED = 3,
+};
+
+/// @brief Tracked entity struct
+typedef struct SFEFaceTracked {
+  /// @brief Tracked detection
+  SFEFaceDetect tracked;
+  /// @brief Tracked ID
+  uint64_t id;
+  /// @brief UUID
+  SFEEntity uuid;
+  /// @brief Tracking state
+  SFEFaceTrackedState state;
+} SFEFaceTracked;
+
+/// @brief Create a new tracker
+/// @param[in] track_threshold Tracking threshold
+/// @param[in] high_threshold High threshold
+/// @param[in] match_threshold Match threshold
+/// @param[in] max_time_lost Maximum time lost
+/// @param[out] out_tracker OUT: pointer to the created tracker
+SFEError sfeFaceTrackerCreate(float track_threshold, float high_threshold,
+                              float match_threshold, uint64_t max_time_lost,
+                              SFEFaceTracker *out_tracker);
+
+/// @brief Free the tracker
+/// @param[in] tracker Tracker to free
+SFEError sfeFaceTrackerFree(SFEFaceTracker tracker);
+
+/// @brief Update the tracker
+/// @param[in] tracker Tracker to update
+/// @param[in] detections Detections to update the tracker with
+/// @param[in] detections_count Number of detections
+/// @param[out] out_tracked OUT: pointer to the array of tracked entities
+/// @param[out] out_tracked_count OUT: number of tracked entities
+/// @return Error in case of failed update
+SFEError sfeFaceTrackerUpdate(SFEFaceTracker tracker, SFEFaceDetect *detections,
+                              size_t detections_count,
+                              SFEFaceTracked *out_tracked,
+                              size_t *out_tracked_count);
+
+/// @brief Get lost entities after update
+/// @param[in] tracker Tracker to get lost entities from
+/// @param[out] out_entities OUT: pointer to the array of lost entities
+/// @param[in,out] in_out_entities_count OUT: number of lost entities
+/// @return Error in case of failed lost entities retrieval
+SFEError sfeFaceTrackerLost(SFEFaceTracker tracker, SFEEntity *out_entities,
+                            size_t *in_out_entities_count);
+
+/// @brief Get removed entities after update
+/// @param[in] tracker Tracker to get removed entities from
+/// @param[out] out_entities OUT: pointer to the array of removed entities
+/// @param[in,out] in_out_entities_count OUT: number of removed entities
+/// @return Error in case of failed removed entities retrieval
+SFEError sfeFaceTrackerRemoved(SFEFaceTracker tracker, SFEEntity *out_entities,
+                               size_t *in_out_entities_count);
 
 #ifdef __cplusplus
 } // extern "C"
